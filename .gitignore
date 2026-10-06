@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+*.tsbuildinfo
+logs
+
+# Configuración local de Claude Code
+.claude/

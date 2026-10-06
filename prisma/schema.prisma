@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  name       String
+  photoUrl   String?
+  headline   String?
+  university String?
+  studies    String?
+  experience String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Photo {
+  id          String @id @default(cuid())
+  title       String
+  subtitle    String
+  description String
+  imageUrl    String
+  order       Int    @default(0)
+}
+
+model Video {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  videoUrl    String
+  order       Int    @default(0)
+}
+
+model Song {
+  id       String @id @default(cuid())
+  title    String
+  artist   String
+  album    String
+  audioUrl String
+  coverUrl String
+  order    Int    @default(0)
+}
