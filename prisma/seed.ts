@@ -71,17 +71,26 @@ const videos = [
   {
     title: 'Big Buck Bunny',
     description: 'Fragmento del cortometraje animado de Blender Foundation (CC BY 3.0) con banda sonora orquestal original.',
+    author: 'Blender Foundation',
     videoUrl: '/media/video/big-buck-bunny.mp4',
+    thumbnailUrl: '/media/thumbs/big-buck-bunny.jpg',
+    duration: 10,
   },
   {
     title: 'Sintel',
     description: 'Fragmento del cortometraje de Blender Foundation (CC BY 3.0), musicalizado por Jan Morgenstern.',
+    author: 'Blender Foundation · Jan Morgenstern',
     videoUrl: '/media/video/sintel.mp4',
+    thumbnailUrl: '/media/thumbs/sintel.jpg',
+    duration: 10,
   },
   {
     title: 'Jellyfish',
     description: 'Clip ambiental de medusas, ideal para acompañar música relajante.',
+    author: 'test-videos.co.uk',
     videoUrl: '/media/video/jellyfish.mp4',
+    thumbnailUrl: '/media/thumbs/jellyfish.jpg',
+    duration: 10,
   },
 ];
 
@@ -103,19 +112,29 @@ async function main() {
   await prisma.song.deleteMany();
   await prisma.song.createMany({ data: songs.map((s, i) => ({ ...s, order: i })) });
 
+  // Perfil del usuario demo. Estudios y experiencia: una entrada por línea, "Título | Lugar | Detalle".
+  const demoProfile = {
+    name: 'Usuario Demo',
+    headline: 'Estudiante de Ingeniería de Software',
+    university: 'Politécnico Grancolombiano',
+    studies: [
+      'Ingeniería de Software | Politécnico Grancolombiano | En curso · Modalidad virtual',
+      'Desarrollo de Aplicaciones Móviles | Politécnico Grancolombiano | 2026 · React Native y NestJS',
+      'Bachiller Académico | Colegio Nacional | Graduado',
+    ].join('\n'),
+    experience: [
+      'Desarrollador Full Stack | Proyectos académicos | Aplicaciones web y móviles con React Native, NestJS y PostgreSQL.',
+      'Productor musical independiente | Home studio | Grabación, mezcla y edición de maquetas.',
+    ].join('\n'),
+  };
+
   await prisma.user.upsert({
     where: { email: 'demo@soundflow.app' },
-    update: {},
+    update: demoProfile,
     create: {
       email: 'demo@soundflow.app',
       password: await bcrypt.hash('soundflow123', 10),
-      name: 'Usuario Demo',
-      headline: 'Estudiante de Ingeniería de Software',
-      university: 'Politécnico Grancolombiano',
-      studies:
-        'Ingeniería de Software (en curso).\nCurso de Desarrollo de Aplicaciones Móviles.\nBachiller académico.',
-      experience:
-        'Desarrollo de aplicaciones web y móviles como proyectos académicos.\nManejo de React Native, NestJS y bases de datos PostgreSQL.',
+      ...demoProfile,
     },
   });
 

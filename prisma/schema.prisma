@@ -33,7 +33,10 @@ model Video {
   id          String @id @default(cuid())
   title       String
   description String
+  author      String @default("")
   videoUrl    String
+  thumbnailUrl String @default("")
+  duration    Int    @default(0) // segundos
   order       Int    @default(0)
 }
 
